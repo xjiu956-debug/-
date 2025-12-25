@@ -144,11 +144,12 @@ node server.js
 在 App 的“自定义模板”选项中，必须填入以下 JSON 结构：
 ```json
 {
-  "from": "[from]",
+  "from": "[card_slot]",
   "content": "[content]"
 }
 
 ```
+必须要获取到设备信息或手动填写SIM信息
 
 
 
