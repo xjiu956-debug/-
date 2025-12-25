@@ -28,14 +28,15 @@ app.post('/webhook/sms', async (req, res) => {
     try {
         // 假设短信转发器发送的 JSON 结构包含 from (发送者/手机号) 和 content (短信内容) {"from": "13800138000", "content": "你的验证码是123456"}
         // 你需要在短信转发器 App 中配置对应的字段映射
-        const { from, content } = req.body;
+        const { from,content } = req.body;
 
-        if (!from || !content) {
+        if (!content) {
             console.log('收到格式错误的请求:', req.body);
-            return res.status(400).send('格式错误: 需要 from 和 content 字段');
+            return res.status(400).send('格式错误');
         }
-
-        const cleanPhone = from.replace(/\D/g, ''); // 简单清理手机号中的非数字字符
+        // from 可能包含前缀，如 "sms_13800138000"，需要提取手机号部分
+        const tempList = from.split("_");
+        const cleanPhone = tempList[tempList.length - 1].replace(/\D/g, ''); // 简单清理手机号中的非数字字符
         const key = `sms:${cleanPhone}`;
 
         // 存入 Redis: 
